@@ -16,8 +16,8 @@ services:
       - .env
     links:
       - db
-    depends_on:
-      - db
+#    depends_on:
+#      - db
   db:
     image: postgres:13-alpine
     volumes:
@@ -25,8 +25,8 @@ services:
     environment:
       POSTGRES_DB: api
       POSTGRES_USER: local-dev
-      POSTGRES_HOST_AUTH_METHOD: trust
-      POSTGRES_PASSWORD: mypassword
+#      POSTGRES_HOST_AUTH_METHOD: trust
+#      POSTGRES_PASSWORD: mypassword
   migrate: &base-migrate
     profiles: [ "tools" ]
     image: migrate/migrate

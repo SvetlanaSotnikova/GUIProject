@@ -82,7 +82,17 @@ func (s *APIServer) defaultRoute(w http.ResponseWriter, r *http.Request) {
 }
 
 func (s *APIServer) issueTokens(w http.ResponseWriter, req *http.Request) error {
-	userID := req.URL.Query().Get("user_id")
+	var input struct {
+		UserID string `json:"user_id"`
+	}
+
+	if err := json.NewDecoder(req.Body).Decode(&input); err != nil {
+		logrus.WithError(err).Error("Error decoding request body")
+		http.Error(w, "invalid request body", http.StatusBadRequest)
+		return nil
+	}
+
+	userID := input.UserID
 	ip := req.RemoteAddr
 
 	if userID == "" {
@@ -98,12 +108,15 @@ func (s *APIServer) issueTokens(w http.ResponseWriter, req *http.Request) error 
 	refreshTokenRaw := fmt.Sprintf("%s:%s", userID, time.Now().String())
 	refreshToken := base64.StdEncoding.EncodeToString([]byte(refreshTokenRaw))
 
-	hashedRefreshToken, err := bcrypt.GenerateFromPassword([]byte(refreshToken), bcrypt.DefaultCost)
+	hashedRefreshTokenBytes, err := bcrypt.GenerateFromPassword([]byte(refreshToken), bcrypt.DefaultCost)
 	if err != nil {
+		logrus.WithError(err).Error("Error generating hashed refresh token")
 		return err
 	}
 
-	if err := s.storage.StoreRefreshToken(req.Context(), userID, string(hashedRefreshToken)); err != nil {
+	hashedRefreshToken := string(hashedRefreshTokenBytes) // Преобразуем в строку
+
+	if err := s.storage.StoreRefreshToken(req.Context(), userID, hashedRefreshToken); err != nil {
 		return err
 	}
 
