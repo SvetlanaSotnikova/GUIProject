@@ -19,7 +19,9 @@ ENV API_SERVER_ADDR=:3000
 ENV DATABASE_URL=postgres://user:password@db:5432/mydatabase
 
 # Сборка приложения
+RUN go get -d -v ./...
 RUN go build -o /tmp/api-server ./*.go
+
 
 # Используем минимальный образ для запуска
 FROM busybox
