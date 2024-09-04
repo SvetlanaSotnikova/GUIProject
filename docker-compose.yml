@@ -1,14 +1,18 @@
 services:
   app:
     build:
-      dockerfile: docker/goland/Dockerfile
+      dockerfile: Dockerfile
       context: .
       target: built
+    volumes:
+      - .:/opt/app/api
     ports:
       - "${API_SERVER_PORT}:${API_SERVER_PORT}"
     env_file:
-      - .env
+      - ./.env
     container_name: app-server
+    links:
+      - db
     depends_on:
       - db
   db:

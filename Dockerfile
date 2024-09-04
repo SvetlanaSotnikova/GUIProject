@@ -7,7 +7,7 @@ FROM base AS built
 WORKDIR /app
 
 # Копируем модульные файлы и загружаем зависимости
-COPY ../app/go.mod ../app/go.sum ./
+COPY go.mod go.sum ./
 RUN go mod download
 
 
@@ -20,9 +20,8 @@ ENV API_SERVER_ADDR=:3000
 ENV DATABASE_URL=postgres://user:password@db:5432/mydatabase
 
 # Сборка приложения
-RUN go get -d -v ./app/...
-RUN go build -o ./app/tmp/api-server ./app/*.go
-
+RUN go get -d -v ./...
+RUN go build -o /tmp/api-server ./*.go
 
 # Используем минимальный образ для запуска
 FROM busybox
