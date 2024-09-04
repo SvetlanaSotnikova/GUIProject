@@ -24,14 +24,11 @@ RUN go get -d -v ./app/...
 RUN go build -o ./app/tmp/api-server ./app/*.go
 
 
-
-
-
 # Используем минимальный образ для запуска
 FROM busybox
 
 # Копируем собранное приложение из образа сборки
-COPY --from=built tmp/api-server /usr/bin/api-server
+COPY --from=built /tmp/api-server /usr/bin/api-server
 
 # Команда по умолчанию для запуска приложения
 CMD ["api-server", "start"]
