@@ -2,8 +2,8 @@ package app
 
 import (
 	"fmt"
-	"github.com/SvetlanaSotnikova/GUIProject/app/apiserver"
-	"github.com/SvetlanaSotnikova/GUIProject/app/storage"
+	"github.com/USER/go-and-compose/apiserver"
+	"github.com/USER/go-and-compose/storage"
 	"github.com/sirupsen/logrus"
 	"github.com/urfave/cli/v2"
 	"os"

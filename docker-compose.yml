@@ -6,26 +6,26 @@ services:
       target: built
     volumes:
       - .:/opt/app/api
+    environment:
+      API_SERVER_ADDR: ":3000"
+      DATABASE_URL: postgres://local-dev@db/api?sslmode=disable
     ports:
       - "${API_SERVER_PORT}:${API_SERVER_PORT}"
     env_file:
       - ./.env
-    container_name: app-server
     links:
       - db
-    depends_on:
-      - db
+#    depends_on:
+#      - db
   db:
     image: postgres:13-alpine
     volumes:
       - data:/var/lib/postgresql/data
-    container_name: app-db
     environment:
       POSTGRES_DB: ${PG_DATABASE_NAME}
       POSTGRES_USER: ${PG_USERNAME}
-      POSTGRES_PASSWORD: ${PG_PASSWORD}
       POSTGRES_HOST_AUTH_METHOD: ${PG_AUTH_METHOD}
-  migrate: &base-migrate
+  migrate: &basemigrate
     profiles: [ "tools" ]
     image: migrate/migrate
     entrypoint: "migrate -database postgresql://local-dev@db/api?sslmode=disable -path /tmp/migrations"
@@ -34,13 +34,14 @@ services:
       - db
     volumes:
       - ./migrations:/tmp/migrations
+
   create-migration:
-    <<: *base-migrate
+    <<: *basemigrate
     entrypoint: migrate create -dir /tmp/migrations -ext sql
     command: ""
-    volumes:
-      - ./migrations:/tmp/migrations
-    depends_on:
-      - db
+#    volumes:
+#      - ./migrations:/tmp/migrations
+#    depends_on:
+#      - db
 volumes:
   data:

@@ -4,7 +4,7 @@ FROM golang:1.23 AS base
 FROM base AS built
 
 # Устанавливаем рабочую директорию
-WORKDIR /app
+WORKDIR /go/app/api
 
 # Копируем модульные файлы и загружаем зависимости
 COPY go.mod go.sum ./

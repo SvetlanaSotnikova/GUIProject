@@ -1,4 +1,4 @@
-module github.com/SvetlanaSotnikova/GUIProject/app
+module github.com/USER/go-and-compose
 
 go 1.23.0
 
