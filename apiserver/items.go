@@ -2,7 +2,7 @@ package apiserver
 
 import (
 	"fmt"
-	"github.com/USER/go-and-compose/storage"
+	"github.com/SvetlanaSotnikova/GUIProject/app/storage"
 	"net/http"
 )
 

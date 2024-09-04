@@ -2,8 +2,8 @@ package main
 
 import (
 	"fmt"
-	"github.com/USER/go-and-compose/apiserver"
-	"github.com/USER/go-and-compose/storage"
+	"github.com/SvetlanaSotnikova/GUIProject/apiserver"
+	"github.com/SvetlanaSotnikova/GUIProject/storage"
 	"github.com/sirupsen/logrus"
 	"github.com/urfave/cli/v2"
 	"os"

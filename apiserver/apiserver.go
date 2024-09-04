@@ -6,7 +6,7 @@ import (
 	"encoding/json"
 	"errors"
 	"fmt"
-	"github.com/USER/go-and-compose/storage"
+	"github.com/SvetlanaSotnikova/GUIProject/storage"
 	"github.com/gorilla/mux"
 	"github.com/sirupsen/logrus"
 	"golang.org/x/crypto/bcrypt"

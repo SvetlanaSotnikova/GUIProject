@@ -22,7 +22,6 @@ ENV DATABASE_URL=postgres://user:password@db:5432/mydatabase
 RUN go get -d -v ./...
 RUN go build -o /tmp/api-server ./*.go
 
-
 # Используем минимальный образ для запуска
 FROM busybox
 
