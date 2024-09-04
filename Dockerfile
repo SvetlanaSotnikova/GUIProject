@@ -10,6 +10,7 @@ WORKDIR /go/app/api
 COPY go.mod go.sum ./
 RUN go mod download
 
+
 # Копируем остальной исходный код
 COPY . .
 
@@ -21,7 +22,6 @@ ENV DATABASE_URL=postgres://user:password@db:5432/mydatabase
 # Сборка приложения
 RUN go get -d -v ./...
 RUN go build -o /tmp/api-server ./*.go
-
 
 # Используем минимальный образ для запуска
 FROM busybox

@@ -1,4 +1,3 @@
-version: "3.9"
 services:
   app:
     build:
@@ -9,25 +8,24 @@ services:
       - .:/opt/app/api
     environment:
       API_SERVER_ADDR: ":3000"
-      DATABASE_URL: "postgres://local-dev@db/api?sslmode=disable"
+      DATABASE_URL: postgres://local-dev@db/api?sslmode=disable
     ports:
-      - "3000:3000"
+      - "${API_SERVER_PORT}:${API_SERVER_PORT}"
     env_file:
       - ./.env
     links:
       - db
-    depends_on:
-      - db
+#    depends_on:
+#      - db
   db:
     image: postgres:13-alpine
     volumes:
       - data:/var/lib/postgresql/data
     environment:
-      POSTGRES_DB: api
-      POSTGRES_USER: local-dev
-      POSTGRES_HOST_AUTH_METHOD: trust
-#      POSTGRES_PASSWORD: mypassword
-  migrate: &base-migrate
+      POSTGRES_DB: ${PG_DATABASE_NAME}
+      POSTGRES_USER: ${PG_USERNAME}
+      POSTGRES_HOST_AUTH_METHOD: ${PG_AUTH_METHOD}
+  migrate: &basemigrate
     profiles: [ "tools" ]
     image: migrate/migrate
     entrypoint: "migrate -database postgresql://local-dev@db/api?sslmode=disable -path /tmp/migrations"
@@ -36,13 +34,14 @@ services:
       - db
     volumes:
       - ./migrations:/tmp/migrations
+
   create-migration:
-    <<: *base-migrate
+    <<: *basemigrate
     entrypoint: migrate create -dir /tmp/migrations -ext sql
     command: ""
-    volumes:
-      - ./migrations:/tmp/migrations
-    depends_on:
-      - db
+#    volumes:
+#      - ./migrations:/tmp/migrations
+#    depends_on:
+#      - db
 volumes:
   data:
